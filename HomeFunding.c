@@ -40,9 +40,9 @@ struct Doacao
 	float valorDoacao;	
 };
 struct Doacao doacao[50];
-char nomeProjetoDoacao[30];
+char nomeProjetoDoacao[30], retirarDoacaoCart[30];
 int x, xTotal, valorDoado;
-float valorDoado2, valorDoado3, valorTotal;
+float valorDoado2, valorDoado3, valorTotal, retirarValorDoado;
 
 
 int main()
@@ -302,7 +302,8 @@ int editarTipoProjeto()
 		printf("*                                            *\n");
 		printf("*[1] Ver lista completa de tipos de projetos *\n");
 		printf("*[2] Buscar tipo de projeto por nome         *\n");
-		printf("*[3] Voltar ao Menu Principal                *\n");
+		printf("*[3] Remover tipo de projeto da lista        *\n");
+		printf("*[4] Voltar ao Menu Principal                *\n");
 		printf("*                                            *\n");
 		printf("**********************************************\n");
     	scanf("%d", &menuEdicao);
@@ -339,7 +340,7 @@ int editarTipoProjeto()
 					do
 					{
 						TenteNovamente2:
-						printf("\nDigite a opcao: \n[1] Editar tipo de projeto \n[2] Voltar ao menu anterior \n");
+						printf("\nDigite a opcao: \n[1] Editar tipo de projeto \n[2] Remover item da lista de tipos de projetos \n[3] Voltar ao menu anterior \n");
 						scanf("%d", &menuEdicao2);
 						
 						switch (menuEdicao2)
@@ -447,6 +448,10 @@ int editarTipoProjeto()
 									break;
 								
 								case 2:
+									printf("\n");
+									goto inicioRemoverTipoProjeto; //Vai para linha 476 inicio da remoção de um item da lista de tipos de projetos
+								
+								case 3:
 									goto menuEdicao; //Volta a linha 256 inicio do menu de edicao de tipo de projeto com system clear
 									
 								case 0:
@@ -461,6 +466,68 @@ int editarTipoProjeto()
         			goto BuscaInicio; //Volta a linha 288 inicio do processo de edicao dos tipos de projetos
         		
         		case 3:
+        			if(iTotal == 0)
+        				{
+        					printf("**********************************************\n");
+        					printf("*      Nenhum tipo de projeto cadastrado     *\n");
+							goto menuEdicao2; //Volta para a linha 259 inicio do menu de edicao dos tipos de projetos sem system clear	
+						}
+					
+					system("cls || clear");
+					inicioRemoverTipoProjeto:
+					
+					fflush(stdin);
+					printf("Qual o tipo de projeto deseja remover?\n");
+					gets(nomeProjeto);
+					fflush(stdin);
+									
+        			for (i=0 ; i<iTotal ; i++)
+						{
+							if (strcmp (nomeProjeto, projeto[i].nomeProjeto) == 0)
+								{
+									if (iTotal == 1)
+										{
+											strcpy(projeto[i].nomeProjeto, "");
+											projeto[i].areia = 0;
+											projeto[i].cal = 0;
+											projeto[i].aco = 0;
+											projeto[i].tijolo = 0;
+											projeto[i].madeira = 0;
+											projeto[i].cimento = 0;
+											projeto[i].argamassa = 0;
+											projeto[i].telha = 0;
+											projeto[i].custo = 0;
+											
+											iTotal = iTotal - 1;
+											system("cls || clear");
+							    			printf("Registro removido com sucesso!\n\n");
+							    			goto menuEdicao2; //Volta a linha 258 inicio do menu de edicao de tipo de projeto sem o system clear
+										}
+											
+									for (i=i ; i<iTotal ; i++)
+										{
+											strcpy(projeto[i].nomeProjeto, projeto[i+1].nomeProjeto);
+											projeto[i].areia = projeto[i+1].areia;
+											projeto[i].cal = projeto[i+1].cal;
+											projeto[i].aco = projeto[i+1].aco;
+											projeto[i].tijolo = projeto[i+1].tijolo;
+											projeto[i].madeira = projeto[i+1].madeira;
+											projeto[i].cimento = projeto[i+1].cimento;
+											projeto[i].argamassa = projeto[i+1].argamassa;
+											projeto[i].telha = projeto[i+1].telha;
+											projeto[i].custo = projeto[i+1].custo;
+										}
+										
+									i = i - 1;
+									iTotal = iTotal - 1;
+								}
+						}
+					
+					system("cls || clear");
+	    			printf("Registro removido com sucesso!\n\n");
+	    			goto menuEdicao2; //Volta a linha 258 inicio do menu de edicao de tipo de projeto sem o system clear
+        			
+        		case 4:
         			return 0;
         		
         		case 0:
@@ -623,7 +690,8 @@ int editarProjetista ()
 		printf("*                                            *\n");
 		printf("*[1] Ver lista de projetos                   *\n");
 		printf("*[2] Buscar projeto por nome                 *\n");
-		printf("*[3] Voltar ao Menu Principal                *\n");
+		printf("*[3] Remover projeto da lista                *\n");
+		printf("*[4] Voltar ao Menu Principal                *\n");
 		printf("*                                            *\n");
 		printf("**********************************************\n");
     	scanf("%d", &menuEdicaoProjetista);
@@ -663,7 +731,7 @@ int editarProjetista ()
 					do
 					{
 						TenteNovamente5:
-						printf("Digite a opcao: \n[1] Editar Projeto \n[2] Voltar ao menu anterior \n\n");
+						printf("Digite a opcao: \n[1] Editar Projeto \n[2] Remover item da lista de projetos \n[3] Voltar ao menu anterior \n\n");
 						scanf("%d", &menuEdicaoProjetista2);
 						
 						switch (menuEdicaoProjetista2)
@@ -778,6 +846,10 @@ int editarProjetista ()
 									break;
 								
 								case 2:
+									printf("\n");
+									goto inicioRemoverProjeto; //Vai para a linha 855 inicio da remoção de um item da lista de projetos;
+								
+								case 3:
 									goto menuEdicaoProjetista; //Volta a linha 492 inicio do menu de edicao de projetos
 									
 								case 0:
@@ -793,6 +865,76 @@ int editarProjetista ()
 					goto BuscaProjetistaInicio; //Volta a linha 526 inicio da edicao de um projeto
 				
 				case 3:
+					if(kTotal == 0)
+        				{
+        					printf("**********************************************\n");
+        					printf("*           Nenhum projeto cadastrado        *\n");
+							goto menuEdicaoProjetista2; //Volta para a linha 516 inicio do menu de edicao dos projetos cadastrados sem system clear	
+						}
+							
+					system("cls || clear");
+					inicioRemoverProjeto:
+					
+					fflush(stdin);
+					printf("Qual projeto deseja remover?\n");
+					gets(nomeProjetoProjetista);
+					fflush(stdin);
+									
+        			for (k=0 ; k<kTotal ; k++)
+						{
+							if (strcmp (nomeProjetoProjetista, projetista[k].nomeProjetista) == 0)
+								{
+									if (kTotal == 1)
+										{
+											strcpy(projetista[k].nomeProjetista, "");
+											strcpy(projetista[k].beneficiarioProjetista, "");
+											strcpy(projetista[k].responsavelProjetista, "");
+											strcpy(projetista[k].nomeProjetoEscolhido, "");
+											projetista[k].qtdCasas = 0;
+											projetista[k].areiaProjeto = 0;
+											projetista[k].calProjeto = 0;
+											projetista[k].acoProjeto = 0;
+											projetista[k].tijoloProjeto = 0;
+											projetista[k].madeiraProjeto = 0;
+											projetista[k].cimentoProjeto = 0;
+											projetista[k].argamassaProjeto = 0;
+											projetista[k].telhaProjeto = 0;
+											projetista[k].custo = 0;
+											
+											kTotal = kTotal - 1;
+											system("cls || clear");
+							    			printf("Registro removido com sucesso!\n\n");
+							    			goto menuEdicaoProjetista2; //Volta a linha 494 inicio do menu de edicao de projetos sem system clear
+										}
+											
+									for (k=k ; k<kTotal ; k++)
+										{
+											strcpy(projetista[k].nomeProjetista, projetista[k+1].nomeProjetista);
+											strcpy(projetista[k].beneficiarioProjetista, projetista[k+1].beneficiarioProjetista);
+											strcpy(projetista[k].responsavelProjetista, projetista[k+1].responsavelProjetista);
+											strcpy(projetista[k].nomeProjetoEscolhido, projetista[k+1].nomeProjetoEscolhido);
+											projetista[k].qtdCasas = projetista[k+1].qtdCasas;
+											projetista[k].areiaProjeto = projetista[k+1].areiaProjeto;
+											projetista[k].calProjeto = projetista[k+1].calProjeto;
+											projetista[k].acoProjeto = projetista[k+1].acoProjeto;
+											projetista[k].tijoloProjeto = projetista[k+1].tijoloProjeto;
+											projetista[k].madeiraProjeto = projetista[k+1].madeiraProjeto;
+											projetista[k].cimentoProjeto = projetista[k+1].cimentoProjeto;
+											projetista[k].argamassaProjeto = projetista[k+1].argamassaProjeto;
+											projetista[k].telhaProjeto = projetista[k+1].telhaProjeto;
+											projetista[k].custo = projetista[k+1].custo;
+										}
+										
+									k = k - 1;
+									kTotal = kTotal - 1;
+								}
+						}
+					
+					system("cls || clear");
+	    			printf("Registro removido com sucesso!\n\n");
+	    			goto menuEdicaoProjetista2; //Volta a linha 494 inicio do menu de edicao de projetos sem system clear
+	    			
+	    		case 4:
 					return 0;
 					
 				case 0:
@@ -982,7 +1124,7 @@ int menuDoacaoP()
 						printf("-------------------------------------\n");
 						
 						TenteNovamente8:
-						printf ("\n\nDeseja concluir suas doacoes? \n[1]Doar e voltar ao menu anterior. \n[2]Nao. Continuar doando.\n");
+						printf ("\n\nDeseja concluir suas doacoes? \n[1]Doar e voltar ao menu anterior. \n[2]Retirar doacao do carrinho \n[3]Nao. Continuar doando.\n");
 						scanf("%d", &finalizaCarrinho);
 												    
 						switch (finalizaCarrinho)
@@ -993,8 +1135,11 @@ int menuDoacaoP()
 									//Verificacao se ha itens dentro do carrinho
 									if (xTotal == 0)
 										{
-											goto menuDoacaoInicio; //Volta a linha 645 inicio do menu de doacoes
-										}
+											system("cls || clear");
+				        					printf("**********************************************\n");
+				        					printf("*          Nenhuma doacao no carrinho        *\n");
+				        					goto menuDoacaoInicio; //Volta para a linha 679 inicio do menu de doacao sem system clear
+				        				}
 									
 									for (k=0 ; k<kTotal ; k++)
 										{
@@ -1014,14 +1159,53 @@ int menuDoacaoP()
 											strcpy(doacao[x].nomeProjetoDoacao, "");
 											doacao[x].valorDoacao = 0;
 										}
+									x=0;
 									xTotal = 0;	
 									valorTotal = 0;
 									
 									printf("Doacoes enviadas com sucesso! Muito Obrigado!\n\n");
 									goto menuDoacaoInicio; //Volta a linha 645 inicio do menu de doacoes
-									break;
-												    		
+									
 								case 2:
+									//Verificacao se ha itens dentro do carrinho
+									if (xTotal == 0)
+										{
+											system("cls || clear");
+				        					printf("**********************************************\n");
+				        					printf("*          Nenhuma doacao no carrinho        *\n");
+				        					printf("**********************************************\n");
+				        					goto menuDoacaoInicio; //Volta para a linha 1048 inicio do carrinho de doacao sem system clear
+				        				}
+				        				
+									printf("\nQual doacao deseja retirar?\n");
+									fflush(stdin);
+									gets(retirarDoacaoCart);
+									fflush(stdin);
+									printf("\nQual o valor da doacao a ser retirada?\n");
+									scanf("%f", &retirarValorDoado);
+									
+									for (x=0 ; x<xTotal ; x++)
+										{
+											if (strcmp (retirarDoacaoCart, doacao[x].nomeProjetoDoacao) == 0 && retirarValorDoado == doacao[x].valorDoacao)
+												{	
+													valorTotal = valorTotal - retirarValorDoado;
+														
+													for (x=x ; x<xTotal ; x++)
+														{
+															strcpy(doacao[x].nomeProjetoDoacao, doacao[x+1].nomeProjetoDoacao);
+															doacao[x].valorDoacao = doacao[x+1].valorDoacao;	
+														}
+														
+													x = x - 1;
+													xTotal = xTotal - 1;
+												}
+										}
+										
+									system("cls || clear");	
+									printf("Doacao retirada com sucesso!\n\n");
+									goto menuDoacaoInicio; //Volta a linha 645 inicio do menu de doacoes
+												    		
+								case 3:
 									system("cls || clear");
 									goto menuDoacaoInicio; //Volta a linha 645 inicio do menu de doacoes
 												    			
